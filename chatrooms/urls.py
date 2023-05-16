@@ -11,7 +11,8 @@ urlpatterns = [
 
     path('room/<int:pk>/post', views.PostCreateView.as_view(), name='rp'),
 
-
+    path('login', views.login, name='li'),
+    path('logout', views.logout_view, name='lo'),
 
     path('userslist/', views.UsersListView.as_view(), name='ul'),
     path('user/<int:pk>', views.UsersDetailView.as_view(), name='ud'),
@@ -20,6 +21,4 @@ urlpatterns = [
     path('user/delete/<int:pk>', views.UserDeleteView.as_view(), name='udl'),
 
     path('mypage', views.Mypage.as_view(), name='mp'),
-
-    path(' ', admin.site.urls)
 ]

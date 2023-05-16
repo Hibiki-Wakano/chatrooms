@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+
+  <form method="post" class="p-4 m-4 bg-light border border-success rounded form-group">
+    {% csrf_token %}
+    <label>ユーザーID</label>
+    <input class="form-control" name="username">
+    <label>パスワード</label>
+    <input type="password" class="form-control" name="pasword">
+    <button type="submit" class="btn btn-primary mt-4">ログイン</button>
+  </form>
+</body>
+{{ user.username}}
+{% endblock %}

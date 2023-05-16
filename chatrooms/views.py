@@ -2,9 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from . import models
-from .forms import Response
+from .forms import Response, LoginForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import logout
 
+def logout_view(request):
+    logout(request)
+    
 
 class RoomsListView(ListView):
     template_name = 'room/list.html'
@@ -51,6 +55,34 @@ class PostCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy('rd',kwargs={'pk': self.object.pk})
 
+def login(request):
+    # POST
+    if request.method == 'POST':
+        ID = request.POST.get('username')
+        password = request.POST.get('password')
+
+        # Djangoの認証機能
+        user = authenticate(username=ID, password=Pass)
+        # ユーザー認証
+        if user:
+            #ユーザーアクティベート判定
+            if user.is_active:
+                # ログイン
+                login(request,user)
+                # ホームページ遷移
+                return HttpResponseRedirect(reverse('home'))
+            else:
+                # アカウント利用不可
+                return HttpResponse("アカウントが有効ではありません")
+        # ユーザー認証失敗
+        else:
+            return HttpResponse("ログインIDまたはパスワードが間違っています")
+    # GET
+    else:
+        return render(request, 'App_Folder_HTML/login.html')
+
+class UserLogoutView(TemplateView):
+    pass
 
 
 class UsersListView(ListView):
@@ -77,6 +109,8 @@ class UserUpdateView(UpdateView):
 
 class UserDeleteView(DeleteView):
     pass
+
+
 
 
 class Mypage(TemplateView):

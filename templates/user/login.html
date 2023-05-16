@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="post" action="{% url 'li' %}">
+    {% csrf_token %}
+    <td><label for="userid">ユーザーID:</label></td>
+    <td><input type="text" name="username"></td>
+    <td><label for="password">パスワード：</label></td>
+    <td><input type="password" name="password"></td>
+    <input type="submit" class="btn" value="ログイン">
+ </form>
+{% endblock content %}
+
+
