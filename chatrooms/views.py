@@ -28,9 +28,9 @@ class RoomDetailView(DetailView):
 
 
 class RoomCreateView(CreateView):
-    template_name = 'room/reate.html'
+    template_name = 'room/create.html'
     model = models.Room
-    fields = '__all__'
+    fields = ['title','user','image']
     success_url = reverse_lazy('rl')
 
 

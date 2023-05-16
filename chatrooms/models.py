@@ -33,7 +33,7 @@ class Room(models.Model):
     title = models.CharField(max_length=100)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='room', height_field=None, width_field=None, max_length=100, default=False)#サムネ
+    image = models.ImageField(upload_to='room', height_field=None, width_field=None, blank=True, max_length=100, default=False)#サムネ
 
     def __str__(self):
         return self.title
@@ -49,7 +49,7 @@ class Post(models.Model):
     def __str__(self):
         return self.user.user_name + ' < ' + self.text + ' at ' +self.room.title
     
-    image = models.ImageField(upload_to='post', height_field=None, width_field=None, max_length=100, default=False)
+    image = models.ImageField(upload_to='post', height_field=None, width_field=None, blank=True, max_length=100, default=False)
 
 class Message(models.Model):
     text = models.TextField()
