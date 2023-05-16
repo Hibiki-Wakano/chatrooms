@@ -45,3 +45,9 @@ class Post(models.Model):
     deleted = models.BooleanField(default=False)
     def __str__(self):
         return self.user.user_name + ' < ' + self.text + ' at ' +self.room.title
+
+class Message(models.Model):
+    text = models.TextField()
+    send_to = models.ForeignKey(CustomUser, related_name='received', on_delete=models.CASCADE)
+    send_from = models.ForeignKey(CustomUser, related_name='sent', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
