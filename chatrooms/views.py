@@ -50,7 +50,7 @@ class RoomDeleteView(DeleteView):
 class PostCreateView(CreateView):
     template_name = 'room/post.html'
     model = models.Post
-    fields = 'text'
+    fields = '__all__'
 
     def get_success_url(self):
         return reverse_lazy('rd',kwargs={'pk': self.object.pk})
