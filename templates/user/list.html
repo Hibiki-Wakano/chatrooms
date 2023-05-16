@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+              <th scope="col">ユーザーID</th>
+              <th scope="col">ユーザー名</th>
+              <th scope="col">フォロー</th>
+              <th scope="col">フォロワー</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user_ in users_list %}
+            <tr>
+              {% if user_.id == user.id %}
+              <td class="bg-secondary"><a href={% url 'mp' %} class="text-white text-decoration-none">★@{{ user_.username }}</a></td>
+              <td class="bg-secondary"><a href={% url 'mp' %} class="text-white text-decoration-none">{{ user_.user_name }}</a></td>
+              <td class="text-white bg-secondary">{{ user_.follow.count }}</td>
+              <td class="text-white bg-secondary">{{ user_.follower.count }}</td>
+              {% else %}
+              <td><a href={% url 'ud' user_.id %} class="text-dark text-decoration-none"} >@{{ user_.username }}</a></td>
+              <td><a href={% url 'ud' user_.id %} class="text-dark text-decoration-none"}>{{ user_.user_name }}</a></td>
+              <td class="text-dark text-decoration-none">{{ user_.follow.count }}</td>
+              <td class="text-dark text-decoration-none">{{ user_.follower.count }}</td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+    </table>
+    <a href={%url 'uc'%} class="btn btn-primary m-4">ユーザー作成</a>
+{% endblock content %}

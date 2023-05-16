@@ -1,0 +1,5 @@
+<form action="{% url 'pc' %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="投稿" />
+  </form>

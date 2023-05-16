@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+              <th scope="col" class="w-50">タイトル</th>
+              <th scope="col">  </th>
+              <th scope="col">作成者</th>
+              <th scope="col">作成日時</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for room in rooms_list %}
+            <tr>
+              <td>{{ room.title }}</th>
+              <td><a href={%url 'rd' room.id %} class="btn btn-primary">入室</a>
+                  返信数: {{ room.post.count }}
+              </th>
+              <td>{{ room.user }}</td>
+              <td>{{ room.created_at|date:"Y/n/j H:i:s" }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+    </table>
+{% endblock content %}

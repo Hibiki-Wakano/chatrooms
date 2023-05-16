@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+      <div class="" name="name">
+        <h4 class="text-center">{{ customuser.user_name }}</h4>
+        <p class="text-center">@{{ customuser.username }}</p>
+
+        <div class="row justify-content-md-center" name="ff">
+          <div class="col-auto" name="follow">
+            <p class="text-center">フォロー</p>
+            <p class="text-center">{{ customuser.follow.count}}</p>
+          </div>
+          <div class="col-auto" name="follower">
+          <p class="text-center">フォロワー</p>
+          <p class="text-center">{{ customuser.follower.count}}</p>
+          </div>
+        </div>
+
+        <div>
+          <a href="#" class="btn btn-primary w-25">フォロー</a>
+        </div>
+        <div>
+          <a href="#" class="btn btn-danger w-25">ブロック</a>
+        </div>
+
+      </div>
+    </div>
+
+    {% for post in customuser.post.all %}
+    {{ post.text }}
+    {{ post.created_at}}
+    {{ post.room }}
+    {% endfor %}
+{% endblock content %}
