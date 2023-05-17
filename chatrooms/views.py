@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from . import models
-from .forms import Response, LoginForm
+from .forms import LoginForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 
@@ -25,21 +25,21 @@ class UserListView(ListView):
 class UserDetailView(DetailView):
     template_name = 'user/detail.html'
     model = models.CustomUser
-class UserCreateView(CreateView):
+class UserCreateView(LoginRequiredMixin, CreateView):
     template_name = 'user/create.html'
     model = models.CustomUser
     fields = ['username', 'user_name', 'password', 'memo']
     success_url = reverse_lazy('rl')
-class UserUpdateView(UpdateView):
+class UserUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'user/update.html'
     model = models.CustomUser
     fields = ['username', 'user_name', 'password', 'memo']
     success_url = reverse_lazy('rl')
-class UserDeleteView(DeleteView):
+class UserDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'user/delete.html'
     model = models.CustomUser
     success_url = reverse_lazy('ul')
-class Mypage(TemplateView):
+class Mypage(LoginRequiredMixin, TemplateView):
     template_name = 'user/mypage.html'
     def get(self, request, **kwargs):
         ctx = {
@@ -57,38 +57,40 @@ class RoomDetailView(DetailView):
     template_name = 'room/detail.html'
     model = models.Room
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # テンプレートにコメント作成フォームを渡す
-        context['response'] = Response
-        return context
 
-
-class RoomCreateView(CreateView):
+class RoomCreateView(LoginRequiredMixin, CreateView):
     template_name = 'room/create.html'
     model = models.Room
     fields = ['title','user','image']
     success_url = reverse_lazy('rl')
 
 
-class RoomUpdateView(UpdateView):
+class RoomUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'room/update.html'
     model = models.Room
     fields = 'title'
     success_url = reverse_lazy('rl')
 
 
-class RoomDeleteView(DeleteView):
+class RoomDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'room/delete.html'
     model = models.Room
     success_url = reverse_lazy('rl')
 
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     template_name = 'room/post.html'
     model = models.Post
-    fields = '__all__'
+    fields = ['text',]
+    success_url = reverse_lazy('rl')
+    def form_valid(self, form):
+        print("read here!!")
+        form.instance.user = self.request.user
+        form.instance.room = models.Room.objects.get(id=self.kwargs.get('pk'))
+        return super(PostCreateView, self).form_valid(form)
 
-    def get_success_url(self):
-        return reverse_lazy('rd',kwargs={'pk': self.object.pk})
-
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data() #元クラスで定義されてるデフォルトのcontextを呼び出してます
+        extra={'room_':models.Room.objects.get(id=self.kwargs.get('pk'))}
+        context.update(extra)
+        return context

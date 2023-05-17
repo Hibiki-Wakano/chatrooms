@@ -1,26 +1,41 @@
 {% extends 'base.html' %}
 {% block content %}
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col" class="w-25">ユーザーID</th>
-                <th scope="col">ユーザー名</th>
-                <th scope="col">フォロー</th>
-                <th scope="col">フォロワー</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-                <td>@{{ user.username }}</td>
-                <td>{{ user.user_name }}</td>
-                <td>{{ user.follow.count }}</td>
-                <td>{{ user.follower.count }}</td>
-            </tr>
-          </tbody>
-    </table>
+<div class="container">
+    <div class="pt-4" name="name">
+      <h4 class="text-center">{{ user.user_name }}</h4>
+      <p class="text-center">@{{ user.username }}</p>
+
+      <div class="row justify-content-md-center" name="ff">
+        <div class="col-auto" name="follow">
+          <p class="text-center">フォロー</p>
+          <p class="text-center">{{ user.follow.count}}</p>
+        </div>
+        <div class="col-auto" name="follower">
+        <p class="text-center">フォロワー</p>
+        <p class="text-center">{{ user.follower.count}}</p>
+        </div>
+      </div>
+
+      <div class="row p-2 justify-content-md-center">
+        <a href="#" class="btn btn-primary col-auto">フォロー</a>
+      </div>
+      <div class="row p-2 justify-content-md-center">
+        <a href="#" class="btn btn-danger col-auto">ブロック</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="container  mt-4">
+    <p class="mt-2">投稿履歴</p>
     {% for post in user.post.all %}
-    {{ post.text }}
-    {{ post.created_at}}
-    {{ post.room }}
+    <div class=" rounded container p-2 m-2 bg-light">
+      <a href={%url 'rd' post.room.id%} class="text-dark text-decoration-none">
+        <p>{{ post.text }}</p>
+        {{ post.created_at|date:"Y/n/j H:i"}}
+        {{ post.room }}
+      </a>
+    </div>
     {% endfor %}
+  </div>
 {% endblock content %}

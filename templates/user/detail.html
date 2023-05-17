@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="container">
-      <div class="" name="name">
+      <div class="pt-4" name="name">
         <h4 class="text-center">{{ customuser.user_name }}</h4>
         <p class="text-center">@{{ customuser.username }}</p>
 
@@ -16,19 +16,28 @@
           </div>
         </div>
 
-        <div>
-          <a href="#" class="btn btn-primary w-25">フォロー</a>
+        <div class="row p-2 justify-content-md-center">
+          <a href="#" class="btn btn-primary col-auto">フォロー</a>
         </div>
-        <div>
-          <a href="#" class="btn btn-danger w-25">ブロック</a>
+        <div class="row p-2 justify-content-md-center">
+          <a href="#" class="btn btn-danger col-auto">ブロック</a>
         </div>
 
       </div>
     </div>
 
-    {% for post in customuser.post.all %}
-    {{ post.text }}
-    {{ post.created_at}}
-    {{ post.room }}
-    {% endfor %}
+    <div class="container  mt-4">
+      <p class="mt-2">投稿履歴</p>
+      {% for post in customuser.post.all %}
+      <div class=" rounded container p-2 m-2 bg-light">
+        <a href={%url 'rd' post.room.id%} class="text-dark text-decoration-none">
+          <p>{{ post.text }}</p>
+          {{ post.created_at|date:"Y/n/j H:i"}}
+          {{ post.room }}
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+
+
 {% endblock content %}
