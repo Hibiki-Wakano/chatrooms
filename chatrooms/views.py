@@ -4,13 +4,50 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from . import models
 from .forms import Response, LoginForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import logout
+from django.contrib.auth.views import LoginView, LogoutView
 
-def logout_view(request):
-    logout(request)
-    
+#INDEX
+#   Auth:Login, Logout
+#   User:Create, List, Detail, Update, Delete, Mypage
+#   Room:Create, List, Detail, Update, Delete, 
+#   end
 
-class RoomsListView(ListView):
+class Login(LoginView):
+    form_class = LoginForm
+    template_name = 'user/login.html'
+class Logout(LoginRequiredMixin, LogoutView):
+    pass
+
+class UserListView(ListView):
+    template_name = 'user/list.html'
+    model = models.CustomUser
+    context_object_name = "users_list"
+class UserDetailView(DetailView):
+    template_name = 'user/detail.html'
+    model = models.CustomUser
+class UserCreateView(CreateView):
+    template_name = 'user/create.html'
+    model = models.CustomUser
+    fields = ['username', 'user_name', 'password', 'memo']
+    success_url = reverse_lazy('rl')
+class UserUpdateView(UpdateView):
+    template_name = 'user/update.html'
+    model = models.CustomUser
+    fields = ['username', 'user_name', 'password', 'memo']
+    success_url = reverse_lazy('rl')
+class UserDeleteView(DeleteView):
+    template_name = 'user/delete.html'
+    model = models.CustomUser
+    success_url = reverse_lazy('ul')
+class Mypage(TemplateView):
+    template_name = 'user/mypage.html'
+    def get(self, request, **kwargs):
+        ctx = {
+            'user': self.request.user
+        }
+        return self.render_to_response(ctx)
+
+class RoomListView(ListView):
     template_name = 'room/list.html'
     model = models.Room
     context_object_name = "rooms_list"
@@ -55,68 +92,3 @@ class PostCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy('rd',kwargs={'pk': self.object.pk})
 
-def login(request):
-    # POST
-    if request.method == 'POST':
-        ID = request.POST.get('username')
-        password = request.POST.get('password')
-
-        # Djangoの認証機能
-        user = authenticate(username=ID, password=Pass)
-        # ユーザー認証
-        if user:
-            #ユーザーアクティベート判定
-            if user.is_active:
-                # ログイン
-                login(request,user)
-                # ホームページ遷移
-                return HttpResponseRedirect(reverse('home'))
-            else:
-                # アカウント利用不可
-                return HttpResponse("アカウントが有効ではありません")
-        # ユーザー認証失敗
-        else:
-            return HttpResponse("ログインIDまたはパスワードが間違っています")
-    # GET
-    else:
-        return render(request, 'App_Folder_HTML/login.html')
-
-class UserLogoutView(TemplateView):
-    pass
-
-
-class UsersListView(ListView):
-    template_name = 'user/list.html'
-    model = models.CustomUser
-    context_object_name = "users_list"
-
-
-class UsersDetailView(DetailView):
-    template_name = 'user/detail.html'
-    model = models.CustomUser
-
-
-class UserCreateView(CreateView):
-    template_name = 'user/create.html'
-    model = models.CustomUser
-    fields = ['username', 'user_name', 'password', 'memo']
-    success_url = reverse_lazy('rl')
-
-
-class UserUpdateView(UpdateView):
-    pass
-
-
-class UserDeleteView(DeleteView):
-    pass
-
-
-
-
-class Mypage(TemplateView):
-    template_name = 'user/mypage.html'
-    def get(self, request, **kwargs):
-        ctx = {
-            'user': self.request.user
-        }
-        return self.render_to_response(ctx)

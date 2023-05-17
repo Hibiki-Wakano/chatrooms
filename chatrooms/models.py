@@ -38,6 +38,10 @@ class Room(models.Model):
     def __str__(self):
         return self.title
     
+    def savePath(instance, filename):
+        ext = filename.split('.')[-1]
+        return f'room/{instance.id}.{ext}'
+    
 
 
 class Post(models.Model):
