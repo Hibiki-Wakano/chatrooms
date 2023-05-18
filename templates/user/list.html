@@ -20,8 +20,10 @@
               {% else %}
               <td><a href={% url 'ud' user_.id %} class="text-dark text-decoration-none"} >@{{ user_.username }}</a></td>
               <td><a href={% url 'ud' user_.id %} class="text-dark text-decoration-none"}>{{ user_.user_name }}</a></td>
-              <td class="text-dark text-decoration-none">{{ user_.follow.count }}</td>
-              <td class="text-dark text-decoration-none">{{ user_.follower.count }}</td>
+              <td class="text-dark text-decoration-none">{{ user_.follow.count }}
+              </td>
+              <td class="text-dark text-decoration-none">{{ user_.follower.count }}
+              </td>
               {% endif %}
             </tr>
             {% endfor %}

@@ -9,6 +9,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 #INDEX
 #   Auth:Login, Logout
 #   User:Create, List, Detail, Update, Delete, Mypage
+#   Connect:List, Create, Delete
 #   Room:Create, List, Detail, Update, Delete, 
 #   end
 
@@ -47,6 +48,16 @@ class Mypage(LoginRequiredMixin, TemplateView):
         }
         return self.render_to_response(ctx)
 
+class FollowListView(ListView):
+    pass
+class FollowerListView(ListView):
+    pass
+class ConnectCreateView(CreateView):
+    pass
+class ConnectDeleteView(DeleteView):
+    pass
+
+
 class RoomListView(ListView):
     template_name = 'room/list.html'
     model = models.Room
@@ -84,13 +95,12 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     fields = ['text',]
     success_url = reverse_lazy('rl')
     def form_valid(self, form):
-        print("read here!!")
         form.instance.user = self.request.user
         form.instance.room = models.Room.objects.get(id=self.kwargs.get('pk'))
         return super(PostCreateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data() #元クラスで定義されてるデフォルトのcontextを呼び出してます
-        extra={'room_':models.Room.objects.get(id=self.kwargs.get('pk'))}
+        extra={'room_': models.Room.objects.get(id=self.kwargs.get('pk'))}
         context.update(extra)
         return context

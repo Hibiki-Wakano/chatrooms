@@ -14,10 +14,14 @@ class Connect(models.Model):
     follow = models.ForeignKey(CustomUser, related_name='follow', on_delete=models.CASCADE)
     follower = models.ForeignKey(CustomUser, related_name='follower', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
+    def __str__(self): #admin上の表示設定
         display= str(self.follow) + " ⇒ " + str(self.follower)
         return display
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["follow", "follower"],name="connect_unique"),
+        ]
+
 
 class Block(models.Model):
     block = models.ForeignKey(CustomUser, related_name='block', on_delete=models.CASCADE)
