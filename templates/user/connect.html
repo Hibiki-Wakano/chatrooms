@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+  <form method="post" class="p-4 m-4 bg-light border border-success rounded form-group">
+    {% csrf_token %}
+    <p class="m-2">{{follower}}をフォローしますか？</p>
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary mt-4">フォローする</button>
+  </form>
+</body>
+
+{% endblock %}

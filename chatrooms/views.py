@@ -52,10 +52,52 @@ class FollowListView(ListView):
     pass
 class FollowerListView(ListView):
     pass
+
 class ConnectCreateView(CreateView):
-    pass
+    template_name = 'user/connect.html'
+    model = models.Connect
+    fields = []
+    success_url = reverse_lazy('ul')
+    def form_valid(self, form):
+        form.instance.follow = self.request.user
+        form.instance.follower = models.CustomUser.objects.get(id=self.kwargs.get('pk'))
+        return super(ConnectCreateView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data() #元クラスで定義されてるデフォルトのcontextを呼び出してます
+        extra={'follower': models.CustomUser.objects.get(id=self.kwargs.get('pk'))}
+        context.update(extra)
+        return context
+    
+
+def ConnectCreate(request, pk):
+    if request.method == 'POST':
+        print('ok??')
+        object = models.Connect.objects.create(
+                follow = request.user,
+                follower = models.User.objects.get(pk=pk)
+                )
+        object.save()
+        print('ok?')
+        return render(request, 'user/list.html')
+    else:
+        return render(request, 'user/list.html')
+
 class ConnectDeleteView(DeleteView):
-    pass
+    template_name = 'user/connectdel.html'
+    model = models.Connect
+    fields = []
+    success_url = reverse_lazy('ul')
+    def form_valid(self, form):
+        form.instance.follow = self.request.user
+        form.instance.follower = models.CustomUser.objects.get(id=self.kwargs.get('pk'))
+        return super(ConnectCreateView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data() #元クラスで定義されてるデフォルトのcontextを呼び出してます
+        extra={'follower': models.CustomUser.objects.get(id=self.kwargs.get('pk'))}
+        context.update(extra)
+        return context
 
 
 class RoomListView(ListView):

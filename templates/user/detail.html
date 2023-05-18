@@ -17,7 +17,8 @@
         </div>
 
         <div class="row p-2 justify-content-md-center">
-          <a href="#" class="btn btn-primary col-auto">フォロー</a>
+          <a href={%url 'cc' customuser.id%} class="btn btn-primary col-auto">フォロー</a>
+          <a href={%url 'cd' customuser.id%} class="btn btn-primary col-auto">フォローを外す</a>
         </div>
         <div class="row p-2 justify-content-md-center">
           <a href="#" class="btn btn-danger col-auto">ブロック</a>
@@ -27,7 +28,7 @@
     </div>
 
     <div class="container  mt-4">
-      <p class="mt-2">投稿履歴</p>
+      <p class="mt-2">投稿履歴{% if customuser.post.count == 0 %}なし{%endif%}</p>
       {% for post in customuser.post.all %}
       <div class=" rounded container p-2 m-2 bg-light">
         <a href={%url 'rd' post.room.id%} class="text-dark text-decoration-none">
@@ -38,6 +39,7 @@
       </div>
       {% endfor %}
     </div>
+
 
 
 {% endblock content %}

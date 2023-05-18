@@ -38,7 +38,7 @@
             <td>{{ post.user }}
               {% if post.user == user%}
                 <a href="#" class="btn btn-danger">削除</a>
-              {% endif%}
+              {%endif%}
             </td>
             <td>{{ post.created_at|date:"Y/n/j H:i:s" }}</td>
           </tr>
