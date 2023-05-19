@@ -115,7 +115,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'chatrooms.CustomUser'
 
 LOGIN_URL = '/login' #ログインURL
-LOGIN_REDIRECT_URL = '/roomslist' #ログイン成功時の遷移先URL
+LOGIN_REDIRECT_URL = '/room/list' #ログイン成功時の遷移先URL
 LOGOUT_REDIRECT_URL='/login' #ログアウト時の遷移先URL
 
 

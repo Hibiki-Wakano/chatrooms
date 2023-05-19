@@ -27,5 +27,6 @@ urlpatterns = [
     path('room/delete/<int:pk>', views.RoomDeleteView.as_view(), name='rdl'),
 
     path('room/<int:pk>/post', views.PostCreateView.as_view(), name='pc'),#ok
+    path('', views.RoomListView.as_view(), name='index'),
 ]
 

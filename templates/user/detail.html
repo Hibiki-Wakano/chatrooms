@@ -7,12 +7,12 @@
 
         <div class="row justify-content-md-center" name="ff">
           <div class="col-auto" name="follow">
-            <p class="text-center">フォロー</p>
-            <p class="text-center">{{ customuser.follow.count}}</p>
+            <a href={%url 'fl1' customuser.id%} class="text-center">フォロー</p>
+            <a href={%url 'fl1' customuser.id%} class="text-center">{{ customuser.follow.count}}</p>
           </div>
           <div class="col-auto" name="follower">
-          <p class="text-center">フォロワー</p>
-          <p class="text-center">{{ customuser.follower.count}}</p>
+            <a href={%url 'fl2' customuser.id%} class="text-center">フォロワー</a>
+            <a href={%url 'fl2' customuser.id%} class="text-center">{{ customuser.follower.count}}</a>
           </div>
         </div>
 

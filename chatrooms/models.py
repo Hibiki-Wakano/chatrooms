@@ -3,12 +3,24 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 class CustomUser(AbstractUser):
-    user_name = models.CharField(max_length=100, default=" ")
+    user_name = models.CharField(max_length=100, default="no name")
     memo = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user_name
+    
+    REQUIRED_FIELDS = ["user_name","memo"]
+    groups = None
+    user_permissions = None
+    last_login = None
+    #superuser_status = False
+    first_name = models.CharField(max_length=100, default=" ",null=True)
+    last_name = models.CharField(max_length=100, default=" ",null=True)
+    email_address = None
+    #staff_status = False
+    date_joined = None
+
 
 class Connect(models.Model):
     follow = models.ForeignKey(CustomUser, related_name='follow', on_delete=models.CASCADE)

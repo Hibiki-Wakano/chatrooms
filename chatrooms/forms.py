@@ -8,3 +8,8 @@ class LoginForm(AuthenticationForm):
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
             field.widget.attrs['placeholder'] = field.label  
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = CustomUser
+        fields = ('username','user_name')

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+<p>ログインしてください</p>
 <form method="post" action="{% url 'li' %}">
     {% csrf_token %}
     <td><label for="userid">ユーザーID:</label></td>
