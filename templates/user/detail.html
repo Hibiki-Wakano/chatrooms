@@ -6,19 +6,24 @@
         <p class="text-center">@{{ customuser.username }}</p>
 
         <div class="row justify-content-md-center" name="ff">
-          <div class="col-auto" name="follow">
-            <a href={%url 'fl1' customuser.id%} class="text-center">フォロー</p>
-            <a href={%url 'fl1' customuser.id%} class="text-center">{{ customuser.follow.count}}</p>
+          <div class="col-auto row justify-content-md-center" name="follow">
+            <a href={%url 'fl1' customuser.id%} class="btn col-auto text-center text-decoration-none">フォロー</a>
+            <div class="col-12"></div>
+            <a href={%url 'fl1' customuser.id%} class="btn col-auto text-center text-decoration-none">{{ customuser.follow.count}}</a>
           </div>
-          <div class="col-auto" name="follower">
-            <a href={%url 'fl2' customuser.id%} class="text-center">フォロワー</a>
-            <a href={%url 'fl2' customuser.id%} class="text-center">{{ customuser.follower.count}}</a>
+          <div class="col-auto row justify-content-md-center" name="follower">
+            <a href={%url 'fl2' customuser.id%} class="btn col-auto text-center text-decoration-none">フォロワー</a>
+            <div class="col-12"></div>
+            <a href={%url 'fl2' customuser.id%} class="btn col-auto text-center text-decoration-none">{{ customuser.follower.count}}</a>
           </div>
         </div>
 
-        <div class="row p-2 justify-content-md-center">
+        <div class="row p-4 justify-content-md-center">
+          {%if not follow_flag%}
           <a href={%url 'cc' customuser.id%} class="btn btn-primary col-auto">フォロー</a>
-          <a href={%url 'cd' customuser.id%} class="btn btn-primary col-auto">フォローを外す</a>
+          {%else%}
+          <a href={%url 'cd' customuser.id%} class="btn btn-secondary col-auto">フォローを外す</a>
+          {%endif%}
         </div>
         <div class="row p-2 justify-content-md-center">
           <a href="#" class="btn btn-danger col-auto">ブロック</a>
@@ -43,3 +48,6 @@
 
 
 {% endblock content %}
+
+{%block css%}
+{%endblock css%}

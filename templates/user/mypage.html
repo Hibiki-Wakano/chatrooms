@@ -5,18 +5,21 @@
         <h4 class="text-center">{{ user.user_name }}</h4>
         <p class="text-center">@{{ user.username }}</p>
 
-        <div class="row justify-content-md-center" name="ff">
-          <div class="col-auto" name="follow">
-            <p class="text-center">フォロー</p>
-            <p class="text-center">{{ user.follow.count}}</p>
+        <div class="row justify-content-md-center p-4" name="ff">
+          <div class="col-auto row justify-content-md-center" name="follow">
+            <a href={%url 'fl1' user.id%} class="btn col-auto text-center text-decoration-none">フォロー</a>
+            <div class="col-12"></div>
+            <a href={%url 'fl1' user.id%} class="btn col-auto text-center text-decoration-none">{{ user.follow.count}}</a>
           </div>
-          <div class="col-auto" name="follower">
-          <p class="text-center">フォロワー</p>
-          <p class="text-center">{{ user.follower.count}}</p>
+          <div class="col-auto row justify-content-md-center" name="follower">
+            <a href={%url 'fl2' user.id%} class="btn col-auto text-center text-decoration-none">フォロワー</a>
+            <div class="col-12"></div>
+            <a href={%url 'fl2' user.id%} class="btn col-auto text-center text-decoration-none">{{ user.follower.count}}</a>
           </div>
         </div>
-
-
+        <div class="text-center">
+          <a href={%url 'uu' user.id%} class="text-center btn btn-success">プロフィール設定</a>
+        </div>
       </div>
     </div>
 

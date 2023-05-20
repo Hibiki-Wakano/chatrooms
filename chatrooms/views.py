@@ -25,6 +25,16 @@ class UserListView(ListView):
 class UserDetailView(DetailView):
     template_name = 'user/detail.html'
     model = models.CustomUser
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data() #元クラスで定義されてるデフォルトのcontextを呼び出してます
+        try: 
+            models.Connect.objects.get(follower_id=self.kwargs.get('pk'),follow_id=self.request.user.id)
+            context['follow_flag'] = True
+        except:
+            context['follow_flag'] = False
+        return context
+
+
 class UserCreateView(LoginRequiredMixin, CreateView):
     template_name = 'user/create.html'
     form_class = CustomUserCreationForm
@@ -32,7 +42,7 @@ class UserCreateView(LoginRequiredMixin, CreateView):
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'user/update.html'
     model = models.CustomUser
-    fields = ['username', 'user_name', 'password', 'memo']
+    fields = ['username', 'user_name', 'memo']
     success_url = reverse_lazy('rl')
 class UserDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'user/delete.html'
@@ -70,7 +80,9 @@ class ConnectCreateView(CreateView):
     template_name = 'user/connect.html'
     model = models.Connect
     fields = []
-    success_url = reverse_lazy('ul')
+    def get_success_url(self):
+          pk=self.kwargs['pk']
+          return reverse_lazy('ud', kwargs={'pk': pk})
     def form_valid(self, form):
         form.instance.follow = self.request.user
         form.instance.follower = models.CustomUser.objects.get(id=self.kwargs.get('pk'))
@@ -99,22 +111,26 @@ def ConnectCreate(request, pk):
 class ConnectDeleteView(DeleteView):
     template_name = 'user/connectdel.html'
     model = models.Connect
-    fields = []
-    success_url = reverse_lazy('ul')
+    
     def post(self,request,**kwargs):
-        print("hello!?")
-        return render(request, 'user/list.html')
+        try:
+            connect = models.Connect.objects.get(follower_id=self.kwargs.get('pk'),follow_id=self.request.user.id)
+            connect.delete()
+        except:
+            pass
+        return redirect('ul')
+
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data() #元クラスで定義されてるデフォルトのcontextを呼び出してます
         extra={'follower': models.CustomUser.objects.get(id=self.kwargs.get('pk'))}
         context.update(extra)
         return context
-    
-    def get_queryset(self, **kwargs):
-        queryset = super().get_queryset(**kwargs) 
-        queryset = queryset.get(follow=self.request.user,follower_id=self.kwargs.get('pk'))
-        return queryset
+
+    def get_object(self, queryset=None):
+        connect = models.Connect.objects.get(follower_id=self.kwargs.get('pk'),follow_id=self.request.user.id)
+        return connect
+
 
 
 class RoomListView(ListView):
