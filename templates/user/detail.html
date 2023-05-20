@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="container">
+
+      <div class="row justify-content-md-center pt-4">
+        <img src={{imgurl}} alt={{customuser.icon}} class="col-auto rounded-circle" width="100" height="100">
+      </div>
       <div class="pt-4" name="name">
         <h4 class="text-center">{{ customuser.user_name }}</h4>
         <p class="text-center">@{{ customuser.username }}</p>

@@ -12,4 +12,9 @@ class LoginForm(AuthenticationForm):
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ('username','user_name')
+        fields = ('username','user_name','icon')
+
+class CustomUserUpdateForm(forms.ModelForm): #ModelFromを継承してFormクラスを生成する
+    class Meta:
+        model = CustomUser
+        fields = ('user_name','icon','memo')

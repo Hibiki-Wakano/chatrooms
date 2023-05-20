@@ -6,7 +6,8 @@ class CustomUser(AbstractUser):
     user_name = models.CharField(max_length=100, default="no name")
     memo = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-
+    icon = models.ImageField(upload_to='icon', height_field=None, width_field=None, blank=True, max_length=100, default=False)
+    icon_changed = models.DateTimeField(blank=True, auto_now=True)
     def __str__(self):
         return self.user_name
     
@@ -15,11 +16,15 @@ class CustomUser(AbstractUser):
     user_permissions = None
     last_login = None
     #superuser_status = False
-    first_name = models.CharField(max_length=100, default=" ",null=True)
-    last_name = models.CharField(max_length=100, default=" ",null=True)
+    first_name = None
+    last_name = None
     email_address = None
     #staff_status = False
     date_joined = None
+
+class Config(models.Model):
+    user = models.OneToOneField(CustomUser,on_delete=models.CASCADE)
+    
 
 
 class Connect(models.Model):

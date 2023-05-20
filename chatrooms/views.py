@@ -18,6 +18,11 @@ class Login(LoginView):
 class Logout(LoginRequiredMixin, LogoutView):
     pass
 
+class UserCreateView(LoginRequiredMixin, CreateView):
+    template_name = 'user/create.html'
+    form_class = CustomUserCreationForm
+    success_url = reverse_lazy('rl')
+
 class UserListView(ListView):
     template_name = 'user/list.html'
     model = models.CustomUser
@@ -32,18 +37,26 @@ class UserDetailView(DetailView):
             context['follow_flag'] = True
         except:
             context['follow_flag'] = False
+        try: 
+            imgurl=models.CustomUser.objects.get(id=self.kwargs.get('pk')).icon
+            if imgurl=='False':
+                imgurl="icon/none.png"
+            context['imgurl'] = "/media/" + str(imgurl)
+        except:
+            context['imgurl'] = "/media/icon/none.png"
         return context
 
-
-class UserCreateView(LoginRequiredMixin, CreateView):
-    template_name = 'user/create.html'
-    form_class = CustomUserCreationForm
-    success_url = reverse_lazy('rl')
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'user/update.html'
     model = models.CustomUser
-    fields = ['username', 'user_name', 'memo']
+    fields = ['username', 'user_name', 'memo', 'icon']
     success_url = reverse_lazy('rl')
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data()
+        print(context)
+        return context
+
 class UserDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'user/delete.html'
     model = models.CustomUser
@@ -51,10 +64,29 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
 class Mypage(LoginRequiredMixin, TemplateView):
     template_name = 'user/mypage.html'
     def get(self, request, **kwargs):
+        try: 
+            imgurl = self.request.user.icon
+            if imgurl=='False':
+                imgurl='/media/icon/none.png'
+            else:
+                imgurl = "/media/" + str(imgurl) 
+        except:
+            imgurl = "/media/icon/none.png"
         ctx = {
-            'user': self.request.user
+            'user': self.request.user,
+            'imgurl' : imgurl
         }
         return self.render_to_response(ctx)
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data() #元クラスで定義されてるデフォルトのcontextを呼び出してます
+        try: 
+            imgurl = models.Connect.objects.get(follower_id=self.kwargs.get('pk'),follow_id=self.request.user.id)
+            context['iconurl'] = "/media/" + str(imgurl) 
+        except:
+            context['iconurl'] = False
+        return context
+
 
 class FollowListView(ListView):
     template_name = 'user/follow.html'
