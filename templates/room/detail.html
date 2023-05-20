@@ -10,7 +10,11 @@
           </thead>
           <tbody>
             <tr>
-              <td>{{ room.title }}</th>
+              <td>{{ room.title }}
+                {%if not room.image == 'False' %}
+                  <img src={{imgurl}} alt="" width="100" height="100" border="2">
+                {%endif%}
+              </th>
               <td>{{ room.user }}
                 {% if room.user == user%}
                   <a href="#" class="btn btn-success">編集</a>

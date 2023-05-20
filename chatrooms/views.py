@@ -144,6 +144,12 @@ class RoomListView(ListView):
 class RoomDetailView(DetailView):
     template_name = 'room/detail.html'
     model = models.Room
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data() #元クラスで定義されてるデフォルトのcontextを呼び出してます
+        extra={'imgurl': "/media/" + str(models.Room.objects.get(id=self.kwargs.get('pk')).image)}
+        context.update(extra)
+        print(context['imgurl'])
+        return context
 
 
 class RoomCreateView(LoginRequiredMixin, CreateView):
