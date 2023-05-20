@@ -10,9 +10,9 @@
           </thead>
           <tbody>
             <tr>
-              <td>{{ room.title }}
+              <td><p>{{ room.title }}</p>
                 {%if not room.image == 'False' %}
-                  <img src={{imgurl}} alt="" width="100" height="100" border="2">
+                  <img src={{imgurl}} alt={{room.image}} width="100" height="100" border="2">
                 {%endif%}
               </th>
               <td>{{ room.user }}
