@@ -5,6 +5,7 @@ from . import models
 from .forms import LoginForm, CustomUserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
+from PIL import Image
 #INDEX
 #   Auth:Login, Logout
 #   User:Create, List, Detail, Update, Delete, Mypage
@@ -50,12 +51,13 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'user/update.html'
     model = models.CustomUser
     fields = ['username', 'user_name', 'memo', 'icon']
-    success_url = reverse_lazy('rl')
+    success_url = reverse_lazy('mp')
 
     def get_context_data(self, **kwargs):
-        context=super().get_context_data()
-        print(context)
-        return context
+       context=super().get_context_data()
+       print(context)
+       return context
+    
 
 class UserDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'user/delete.html'
@@ -76,6 +78,11 @@ class Mypage(LoginRequiredMixin, TemplateView):
             'user': self.request.user,
             'imgurl' : imgurl
         }
+        if self.request.user.icon != 'False':
+            img = Image.open("media_local/"+str(self.request.user.icon))
+            if img.width!=256 or img.height!=256:
+                img_resize = img.resize((256, 256))
+                img_resize.save("media_local/"+str(self.request.user.icon))
         return self.render_to_response(ctx)
 
     def get_context_data(self, **kwargs):
