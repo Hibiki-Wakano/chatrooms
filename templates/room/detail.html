@@ -10,9 +10,9 @@
           </thead>
           <tbody>
             <tr>
-              <td><p>{{ room.title }}</p>
+              <td><p>{{ room.title|linebreaksbr }}</p>
                 {%if not room.image == 'False' %}
-                  <img src={{imgurl}} alt={{room.image}} width="100" height="100" border="2">
+                  <a href={{imgurl}}><img src={{imgurl}} alt={{room.image}} border="1" class="img-fluid"></a>
                 {%endif%}
               </th>
               <td>{{ room.user }}
@@ -38,7 +38,10 @@
         <tbody>
         {% for post in room.post.all %}
           <tr>
-            <td>{{ forloop.counter }}. {{ post.text }}</th>
+            <td>
+              <div class="border d-flex justify-content-start">{{ forloop.counter }}.</div>
+              <div class="border d-flex justify-content-start">{{ post.text|linebreaksbr }}</div>
+            </td>
             <td>{{ post.user }}
               {% if post.user == user%}
                 <a href="#" class="btn btn-danger">削除</a>

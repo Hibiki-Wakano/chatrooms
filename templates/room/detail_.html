@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" name="main">
+
+  <div class="container row pt-2 w-75" name="title">
+    <div class="bg-light rounded">
+    <div class="mt-1"><h4>{{ room.title }}</h4></div>
+    <div class="col-auto"><p>{{room.user.user_name}} @{{room.user.username}}</p></div>
+    <div></div>
+    {%if not room.image == 'False' %}
+    <div class="col-auto mb-2" name="image">
+      <a href={{imgurl}}><img src={{imgurl}} alt={{room.image}} width="300" class="img-fluid" border="1"></a>
+    </div>
+    {%endif%}
+    {%if room.user == user%}
+    <div class="">
+      <a href="#">編集する</a>
+    </div>
+    {%endif%}
+    </div>
+  </div>
+
+  <div class="container row pt-2" name="form">
+    <form method="post" action="{% url 'pc' room.pk %}" class="rounded form-group">
+      <div class="mt-2"></div>
+      {% csrf_token %}
+      {{ postform.text }}
+      <button type="submit" class="btn btn-sm btn-primary mb-2">返信</button>
+    </form>
+  </div>
+
+
+  <div class="container row mb-2 w-75">
+    {%for post in room.post.all%}
+      <div class="bg-light mt-2 p-2 rounded">
+        <p>{{forloop.counter}}. {{post.user.user_name}} @{{post.user.username}}</p>
+        {{post.text}}
+      </div>
+    {%endfor%}
+  </div>
+</div>
+
+{% endblock content %}

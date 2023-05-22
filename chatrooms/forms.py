@@ -18,3 +18,11 @@ class CustomUserUpdateForm(forms.ModelForm): #ModelFromを継承してFormクラ
     class Meta:
         model = CustomUser
         fields = ('user_name','icon','memo')
+
+class PostCreateForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('text',)
+        widgets = {
+            'text': forms.Textarea(attrs={'rows':2, 'cols':60}),
+        }
