@@ -15,6 +15,10 @@ class UserListView(ListView):
     template_name = 'user/list.html'
     model = models.CustomUser
     context_object_name = "users_list"
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data()
+        print(kwargs)
+        return context
 
 class UserSearchView(ListView):
     template_name = 'user/list.html'
@@ -41,6 +45,11 @@ class UserDetailView(DetailView):
             context['follow_flag'] = True
         except:
             context['follow_flag'] = False
+        try: 
+            models.Block.objects.get(blocked_id=self.kwargs.get('pk'),block_id=self.request.user.id)
+            context['block_flag'] = True
+        except:
+            context['block_flag'] = False
         try: 
             imgurl=models.CustomUser.objects.get(id=self.kwargs.get('pk')).icon
             if imgurl=='False':

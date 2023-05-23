@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load icon_filter %}
+{% block title %}{{title}}{% endblock title %}
 {% block content %}
+{{search}}
 <div class="container">
   <div class="row justify-content-md-center">
   {%for user_ in users_list%}

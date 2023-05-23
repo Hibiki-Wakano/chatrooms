@@ -2,9 +2,9 @@
 {% block content %}
   <form method="post" class="p-4 m-4 bg-light border border-success rounded form-group">
     {% csrf_token %}
-    <p class="m-2">{{follower}}をフォローしますか？</p>
+    <p class="m-2">{{target}}を{{f_or_b}}しますか？</p>
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary mt-4">フォローする</button>
+    <button type="submit" class="btn {%if f_or_b == 'フォロー' %}btn-primary{%else%}btn-danger{%endif%} mt-4">{{f_or_b}}する</button>
   </form>
 </body>
 

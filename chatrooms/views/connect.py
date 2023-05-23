@@ -6,24 +6,42 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class FollowListView(ListView):
-    template_name = 'user/connectlist.html'
+    template_name = 'user/list.html'
     model = models.Connect
-    context_object_name = "connect_list"
+    context_object_name = "users_list"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs) 
+        context['title'] = 'フォロー一覧'
+        return context
+
 
     def get_queryset(self, **kwargs):
         queryset = super().get_queryset(**kwargs) 
         queryset = queryset.filter(follow_id=self.kwargs.get('pk')).order_by('-created_at')
-        return queryset
+        qs=[]
+        for i in queryset:
+            qs.append(i.follower)
+        print(qs)
+        return qs
 
 class FollowerListView(ListView):
-    template_name = 'user/connectlist.html'
+    template_name = 'user/list.html'
     model = models.Connect
-    context_object_name = "connect_list"
+    context_object_name = "users_list"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs) 
+        context['title'] = 'フォロワー一覧'
+        return context
 
     def get_queryset(self, **kwargs):
         queryset = super().get_queryset(**kwargs) 
         queryset = queryset.filter(follower_id=self.kwargs.get('pk')).order_by('-created_at')
-        return queryset
+        qs=[]
+        for i in queryset:
+            qs.append(i.follow)
+        print(qs)
+        return qs
 
 class ConnectCreateView(CreateView):
     template_name = 'user/connect.html'
@@ -39,7 +57,10 @@ class ConnectCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data() #元クラスで定義されてるデフォルトのcontextを呼び出してます
-        extra={'follower': models.CustomUser.objects.get(id=self.kwargs.get('pk'))}
+        extra={
+            'target': models.CustomUser.objects.get(id=self.kwargs.get('pk')),
+            'f_or_b': 'フォロー'
+        }
         context.update(extra)
         return context
     
@@ -59,7 +80,10 @@ class ConnectDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data() #元クラスで定義されてるデフォルトのcontextを呼び出してます
-        extra={'follower': models.CustomUser.objects.get(id=self.kwargs.get('pk'))}
+        extra={
+            'target': models.CustomUser.objects.get(id=self.kwargs.get('pk')),
+            'f_or_b': 'フォロー'
+            }
         context.update(extra)
         return context
 
@@ -67,5 +91,3 @@ class ConnectDeleteView(DeleteView):
         connect = models.Connect.objects.get(follower_id=self.kwargs.get('pk'),follow_id=self.request.user.id)
         return connect
 
-class BlockListView(ListView):
-    pass

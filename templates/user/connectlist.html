@@ -1,20 +1,19 @@
 {% extends 'base.html' %}
+{% load icon_filter %}
 {% block content %}
-    <table class="table table-hover">
-        <thead>
-            <tr>
-              <th scope="col">FROM</th>
-              <th scope="col">TO</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for connect in connect_list %}
-            <tr>
-              <td><a href={% url 'ud' connect.follow.id %} class="text-dark text-decoration-none"} >@{{ connect.follow.username }}</a></td>
-              <td><a href={% url 'ud' connect.follower.id %} class="text-dark text-decoration-none"}>{{ connect.follower.username }}</a></td>
-            </tr>
-            {% endfor %}
-          </tbody>
-    </table>
-    <a href={%url 'uc'%} class="btn btn-primary m-4">ユーザー作成</a>
+<div class="container">
+  <div class="row justify-content-md-center">
+  {%for connect in connect_list%}
+  <div class="col-9 p-2 mt-2 row border-bottom" name="user">
+    <div class="col-auto" name="icon">
+      <img src={{connect.follower.icon|icon_filter}} alt={{connect.follower.icon}} class="rounded-circle col-auto" width="64" height="64">
+    </div>
+    <div class="col-auto" name="name+id-and-memo">
+      <div class="" name="name+id"><a href={%url 'ud' connect.follower.pk%} class="text-decoration-none text-dark">{{connect.follower}} @{{connect.follower.username}}</a></div>
+      <div class="" name="memo">{{connect.follower.memo|linebreaksbr}}</div>
+    </div>
+  </div>
+  {%endfor%}
+</div>
+</div>
 {% endblock content %}

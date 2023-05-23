@@ -49,7 +49,10 @@ class Block(models.Model):
     def __str__(self):
         display= str(self.block) + " ⇒ " + str(self.blocked)
         return display
-
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["block", "blocked"],name="block_unique"),
+        ]
 
 class Room(models.Model):
     title = models.CharField(max_length=100)

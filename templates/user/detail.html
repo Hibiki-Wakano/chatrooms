@@ -23,14 +23,20 @@
         </div>
 
         <div class="row p-4 justify-content-md-center">
+          {%if not block_flag%}
           {%if not follow_flag%}
           <a href={%url 'cc' customuser.id%} class="btn btn-primary col-auto">フォロー</a>
           {%else%}
-          <a href={%url 'cd' customuser.id%} class="btn btn-secondary col-auto">フォローを外す</a>
+          <a href={%url 'cd' customuser.id%} class="btn btn-secondary col-auto">フォロー解除</a>
+          {%endif%}
           {%endif%}
         </div>
         <div class="row p-2 justify-content-md-center">
-          <a href="#" class="btn btn-danger col-auto">ブロック</a>
+          {%if not block_flag%}
+          <a href={%url 'bc' customuser.pk%} class="btn btn-danger col-auto">ブロック</a>
+          {%else%}
+          <a href={%url 'bd' customuser.pk%} class="btn btn-secondary col-auto">ブロック解除</a>
+          {%endif%}
         </div>
 
       </div>

@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import auth,room,user,connect
+from .views import auth,room,user,connect, block
 
 from django.contrib import admin
 
@@ -14,12 +14,14 @@ urlpatterns = [
     path('user/<int:pk>/update', user.UserUpdateView.as_view(), name='uu'),
     path('user/<int:pk>/delete', user.UserDeleteView.as_view(), name='udl'),
     path('mypage', user.Mypage.as_view(), name='mp'),
-    path('blocklist',connect.BlockListView.as_view(), name='bl'),
-
+    path('blocklist',block.BlockListView.as_view(), name='bl'),
+    path('user/<int:pk>/block', block.BlockCreateView.as_view(), name='bc'),
+    path('user/<int:pk>/blockend', block.BlockDeleteView.as_view(), name='bd'),
     path('user/<int:pk>/follow',connect.FollowListView.as_view(), name='fl1'),
     path('user/<int:pk>/follower',connect.FollowerListView.as_view(), name='fl2'),
     path('user/<int:pk>/connect',connect.ConnectCreateView.as_view(), name='cc'),
     path('user/<int:pk>/disconnect',connect.ConnectDeleteView.as_view(), name='cd'),
+    
 
 
 
