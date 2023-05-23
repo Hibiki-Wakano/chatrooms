@@ -16,9 +16,24 @@ class UserListView(ListView):
     model = models.CustomUser
     context_object_name = "users_list"
 
+class UserSearchView(ListView):
+    template_name = 'user/list.html'
+    model = models.CustomUser
+    context_object_name = "users_list"
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data()
+        context['users_list'] = models.CustomUser.objects.filter(username__contains=self.kwargs.get('p'))
+        return context
+
 class UserDetailView(DetailView):
     template_name = 'user/detail.html'
     model = models.CustomUser
+    def get(self, request, **kwargs):
+        if self.request.user.id == self.kwargs.get('pk'):
+            return redirect('mp')
+        else:
+            return super().get(request)
+
     def get_context_data(self, **kwargs):
         context=super().get_context_data() #元クラスで定義されてるデフォルトのcontextを呼び出してます
         try: 
@@ -38,7 +53,7 @@ class UserDetailView(DetailView):
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'user/update.html'
     model = models.CustomUser
-    fields = ['username', 'user_name', 'memo', 'icon']
+    fields = ['user_name', 'memo', 'icon']
     success_url = reverse_lazy('mp')
 
     def get_context_data(self, **kwargs):

@@ -24,6 +24,7 @@ class CustomUser(AbstractUser):
 
 class Config(models.Model):
     user = models.OneToOneField(CustomUser,on_delete=models.CASCADE)
+    darkmode = models.BooleanField(default=False,blank=False)
     
 
 

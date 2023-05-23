@@ -19,6 +19,13 @@ class CustomUserUpdateForm(forms.ModelForm): #ModelFromを継承してFormクラ
         model = CustomUser
         fields = ('user_name','icon','memo')
 
+class CustomUserSearchForm(forms.ModelForm):
+    username = forms.CharField(
+        initial='',
+        label='ユーザーID',
+        required = False, # 必須ではない
+    )
+
 class PostCreateForm(forms.ModelForm):
     class Meta:
         model = Post

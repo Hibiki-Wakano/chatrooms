@@ -1,33 +1,19 @@
 {% extends 'base.html' %}
+{% load icon_filter %}
 {% block content %}
-    <table class="table table-hover">
-        <thead>
-            <tr>
-              <th scope="col">ユーザーID</th>
-              <th scope="col">ユーザー名</th>
-              <th scope="col">フォロー</th>
-              <th scope="col">フォロワー</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for user_ in users_list %}
-            <tr>
-              {% if user_.id == user.id %}
-              <td class="bg-secondary"><a href={% url 'mp' %} class="text-white text-decoration-none">★@{{ user_.username }}</a></td>
-              <td class="bg-secondary"><a href={% url 'mp' %} class="text-white text-decoration-none">{{ user_.user_name }}</a></td>
-              <td class="text-white bg-secondary">{{ user_.follow.count }}</td>
-              <td class="text-white bg-secondary">{{ user_.follower.count }}</td>
-              {% else %}
-              <td><a href={% url 'ud' user_.id %} class="text-dark text-decoration-none"} >@{{ user_.username }}</a></td>
-              <td><a href={% url 'ud' user_.id %} class="text-dark text-decoration-none"}>{{ user_.user_name }}</a></td>
-              <td class="text-dark text-decoration-none">{{ user_.follow.count }}
-              </td>
-              <td class="text-dark text-decoration-none">{{ user_.follower.count }}
-              </td>
-              {% endif %}
-            </tr>
-            {% endfor %}
-          </tbody>
-    </table>
-    <a href={%url 'uc'%} class="btn btn-primary m-4">ユーザー作成</a>
+<div class="container">
+  <div class="row justify-content-md-center">
+  {%for user_ in users_list%}
+  <div class="col-9 p-2 mt-2 row border-bottom" name="user">
+    <div class="col-auto" name="icon">
+      <img src={{user_.icon|icon_filter}} alt={{user_.icon}} class="rounded-circle col-auto" width="64" height="64">
+    </div>
+    <div class="col-auto" name="name+id-and-memo">
+      <div class="" name="name+id"><a href={%url 'ud' user_.pk%} class="text-decoration-none text-dark">{{user_}} @{{user_.username}}</a></div>
+      <div class="" name="memo">{{user_.memo|linebreaksbr}}</div>
+    </div>
+  </div>
+  {%endfor%}
+</div>
+</div>
 {% endblock content %}
