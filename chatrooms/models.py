@@ -25,7 +25,25 @@ class CustomUser(AbstractUser):
 class Config(models.Model):
     user = models.OneToOneField(CustomUser,on_delete=models.CASCADE)
     darkmode = models.BooleanField(default=False,blank=False)
-    
+
+class Message(models.Model):
+    sent = models.ForeignKey(CustomUser, related_name='sent_message', on_delete=models.CASCADE)
+    received = models.ForeignKey(CustomUser, related_name='received_message', on_delete=models.CASCADE)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    cansel = models.BooleanField(default=False)
+
+class Notice(models.Model):
+    user = models.ForeignKey(CustomUser, related_name='notice', on_delete=models.CASCADE)
+    kind = (
+        (0,'system notice'),
+        (1,'the user followed you'),
+        (2,'received the message'),
+        (3,'the user replied you')
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    read = models.BooleanField(default=False)
+    text = models.TextField()
 
 
 class Connect(models.Model):

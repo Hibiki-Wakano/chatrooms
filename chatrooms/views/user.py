@@ -15,9 +15,27 @@ class UserListView(ListView):
     template_name = 'user/list.html'
     model = models.CustomUser
     context_object_name = "users_list"
+    def get_queryset(self, **kwargs):
+        qs=super().get_queryset(**kwargs)
+        for u in qs:
+            try:
+                models.Block.objects.get(block_id=self.request.user.pk, blocked_id=u.pk)
+                print('I blocked '+str(u.username))
+                qs = qs.exclude(id=u.pk)
+            except:
+                pass
+            try:
+                models.Block.objects.get(blocked_id=self.request.user.pk, block_id=u.pk)
+                print(str(u.username)+'blocked me')
+                qs = qs.exclude(id=u.pk)
+            except:
+                pass
+        return qs
+
+
+
     def get_context_data(self, **kwargs):
         context=super().get_context_data()
-        print(kwargs)
         return context
 
 class UserSearchView(ListView):
