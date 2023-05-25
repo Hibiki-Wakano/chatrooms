@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load icon_filter %}
+{% block title %}{{title}}{% endblock title %}
+{% block content %}
+{{search}}
+<div class="container">
+    {%for message in object_list%}
+    <div class="row justify-content-md-center">
+        <div class="col-9 p-2  row border-bottom  {%if message.sent.id == user.id %}bg-light{% endif %}" name="user">
+            <div class="col-auto" name="icon">
+                <img src={%if message.sent == user %}{{message.received.icon|icon_filter}}
+                    {%else%}{{message.sent.icon|icon_filter}}
+                    {%endif%}
+                     alt="" class="rounded-circle col-auto" width="64" height="64">
+            </div>
+            <div class="col-auto" name="name+id-and-memo">
+                {%if message.sent == user %}
+                <div class="" name="name+id"><a href={%url 'mr' message.received.username%} class="text-decoration-none text-dark">{{message.received.user_name}} @{{message.received.username}}</a></div>
+                {%else%}
+                <div class="" name="name+id"><a href={%url 'mr' message.sent.username%} class="text-decoration-none text-dark">{{message.sent.user_name}} @{{message.sent.username}}</a></div>
+                {%endif%}
+                <div class="" name="memo">{{message.text|linebreaksbr}}</div>
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+</div>
+{% endblock content %}

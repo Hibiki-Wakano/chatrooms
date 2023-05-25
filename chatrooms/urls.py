@@ -23,6 +23,7 @@ urlpatterns = [
     path('user/<int:pk>/disconnect',connect.ConnectDeleteView.as_view(), name='cd'),
     path('messagebox',message.MessageBoxView.as_view(), name="mb"),
     path('message/<p>',message.MessageRoomView.as_view(), name="mr"),
+    path('message/create/<p>',message.MessageCreate.as_view(), name="mc"),
     path('message/ajax',message.ajax, name="majax"),
 
 

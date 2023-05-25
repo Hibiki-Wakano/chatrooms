@@ -1,7 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load icon_filter %}
+{% load image_filter %}
 <div class="container w-75">
+    <div class="container row mt-2 justify-content-end" name="form">
+        <form method="post" action="{% url 'mc' p %}" class="rounded form-group col-9 align-items-center">
+            <div class=""></div>
+            {% csrf_token %}
+            {{ messageform.text }}
+            <button type="submit" class="btn btn-sm btn-primary">返信</button>
+        </form>
+      </div>
     <div class="container row" name="message_list">
         {% for message in object_list %}
         {% if message.sent == user %}
@@ -9,20 +18,36 @@
             <div class="container col-auto row" name="sent">
                 <div class="col-auto d-flex align-items-center pt-2" name="text">
                     <p>{{message.text|linebreaks}}</p>
+                    {%if not message.image == 'False' %}
+                    <div class=""></div>
+                    <div class="">
+                        <img src={{message.image|image_filter}} width="256" height="192" >
+                    </div>
+                    {%endif%}
                 </div>
                 <div class="col-auto" name="icon">
-                    <img src={{message.sent.icon|icon_filter}} alt={{message.sent.icon}} class="rounded-circle col-auto" width="48" height="48">
+                    <a href={%url 'ud' message.sent.pk%}>
+                        <img src={{message.sent.icon|icon_filter}} alt={{message.sent.icon}} class="rounded-circle col-auto" width="48" height="48">
+                    </a>
                 </div>
             </div>
         </div>
         {% else %}
         <div class="container row justify-content-start my-2" name="message">
             <div class="container col-auto row" name="receive">
-                <div class="col-auto" name="icon">
-                    <img src={{message.sent.icon|icon_filter}} alt={{message.sent.icon}} class="rounded-circle col-auto" width="48" height="48">
+                <div class="col-auto d-flex align-items-center" name="icon">
+                    <a href={%url 'ud' message.sent.pk%}>
+                        <img src={{message.sent.icon|icon_filter}} alt={{message.sent.icon}} class="rounded-circle col-auto" width="48" height="48">
+                    </a>
                 </div>
-                <div class="col-auto d-flex align-items-center pt-2" name="text">
-                    <p>{{message.text|linebreaks}}</p>
+                <div class="row col-auto d-flex align-items-center pt-2" name="text">
+                    <p class="">{{message.text|linebreaks}}</p>
+                    {%if not message.image == 'False' %}
+                    <div class=""></div>
+                    <div class="">
+                        <img src={{message.image|image_filter}} width="256" height="192" >
+                    </div>
+                    {%endif%}
                 </div>
             </div>
         </div>
@@ -32,24 +57,3 @@
 </div>
   
   {% endblock content %}
-
-  {% if message.sent == user %}
-  <div class="container border col-auto row justify-content-end" name="received-message">
-      <div class="container border col-auto row" name="received-message">
-      <div class="border col-auto" name="icon">
-          <img src={{message.sent.icon|icon_filter}} alt={{message.sent.icon}} class="rounded-circle col-auto" width="64" height="64">
-      </div>
-      <div class="border col-auto" name="text">
-          {{message.text}}
-      </div>
-  </div>
-  {% else %}
-  <div class="container border border col-auto row  justify-content-start" name="sent-message">
-      <div class="border col-auto" name="icon">
-          <img src={{message.sent.icon|icon_filter}} alt={{message.sent.icon}} class="rounded-circle col-auto" width="64" height="64">
-      </div>
-      <div class="border col-auto" name="text">
-          {{message.text}}
-      </div>
-  </div>
-  {% endif %}

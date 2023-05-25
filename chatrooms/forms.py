@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, CustomUser
+from .models import Post, CustomUser, Message
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 class LoginForm(AuthenticationForm):
@@ -32,4 +32,12 @@ class PostCreateForm(forms.ModelForm):
         fields = ('text',)
         widgets = {
             'text': forms.Textarea(attrs={'rows':2, 'cols':60}),
+        }
+
+class MessageCreateForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ('text','image',)
+        widgets = {
+            'text': forms.Textarea(attrs={'rows':1, 'cols':45}),
         }

@@ -30,6 +30,7 @@
           <a href={%url 'cd' customuser.id%} class="btn btn-secondary col-auto">フォロー解除</a>
           {%endif%}
           {%endif%}
+          <a href={%url 'mr' customuser.username%} class="btn btn-white col-auto border border3 ms-2">メッセージ</a>
         </div>
         <div class="row p-2 justify-content-md-center">
           {%if not block_flag%}
@@ -38,7 +39,6 @@
           <a href={%url 'bd' customuser.pk%} class="btn btn-secondary col-auto">ブロック解除</a>
           {%endif%}
         </div>
-
       </div>
     </div>
 

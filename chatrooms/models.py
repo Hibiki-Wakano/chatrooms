@@ -32,7 +32,10 @@ class Message(models.Model):
     text = models.TextField()
     image = models.ImageField(upload_to='messasge', height_field=None, width_field=None, blank=True, max_length=100, default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    cansel = models.BooleanField(default=False)
+    cancel = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.text
 
 
 class Notice(models.Model):
