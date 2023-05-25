@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import auth,room,user,connect, block
+from .views import auth,user,notice,connect,block,message,room
 
 from django.contrib import admin
 
@@ -21,9 +21,9 @@ urlpatterns = [
     path('user/<int:pk>/follower',connect.FollowerListView.as_view(), name='fl2'),
     path('user/<int:pk>/connect',connect.ConnectCreateView.as_view(), name='cc'),
     path('user/<int:pk>/disconnect',connect.ConnectDeleteView.as_view(), name='cd'),
-    
-
-
+    path('messagebox',message.MessageBoxView.as_view(), name="mb"),
+    path('message/<p>',message.MessageRoomView.as_view(), name="mr"),
+    path('message/ajax',message.ajax, name="majax"),
 
 
     path('room/list', room.RoomListView.as_view(), name='rl'),

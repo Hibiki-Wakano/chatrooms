@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load icon_filter %}
+<div class="container w-75">
+    <div class="container row" name="message_list">
+        {% for message in object_list %}
+        {% if message.sent == user %}
+        <div class="container row justify-content-end my-2" name="message">
+            <div class="container col-auto row" name="sent">
+                <div class="col-auto d-flex align-items-center pt-2" name="text">
+                    <p>{{message.text|linebreaks}}</p>
+                </div>
+                <div class="col-auto" name="icon">
+                    <img src={{message.sent.icon|icon_filter}} alt={{message.sent.icon}} class="rounded-circle col-auto" width="48" height="48">
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="container row justify-content-start my-2" name="message">
+            <div class="container col-auto row" name="receive">
+                <div class="col-auto" name="icon">
+                    <img src={{message.sent.icon|icon_filter}} alt={{message.sent.icon}} class="rounded-circle col-auto" width="48" height="48">
+                </div>
+                <div class="col-auto d-flex align-items-center pt-2" name="text">
+                    <p>{{message.text|linebreaks}}</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+  
+  {% endblock content %}
+
+  {% if message.sent == user %}
+  <div class="container border col-auto row justify-content-end" name="received-message">
+      <div class="container border col-auto row" name="received-message">
+      <div class="border col-auto" name="icon">
+          <img src={{message.sent.icon|icon_filter}} alt={{message.sent.icon}} class="rounded-circle col-auto" width="64" height="64">
+      </div>
+      <div class="border col-auto" name="text">
+          {{message.text}}
+      </div>
+  </div>
+  {% else %}
+  <div class="container border border col-auto row  justify-content-start" name="sent-message">
+      <div class="border col-auto" name="icon">
+          <img src={{message.sent.icon|icon_filter}} alt={{message.sent.icon}} class="rounded-circle col-auto" width="64" height="64">
+      </div>
+      <div class="border col-auto" name="text">
+          {{message.text}}
+      </div>
+  </div>
+  {% endif %}

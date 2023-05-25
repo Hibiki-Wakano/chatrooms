@@ -30,17 +30,20 @@ class Message(models.Model):
     sent = models.ForeignKey(CustomUser, related_name='sent_message', on_delete=models.CASCADE)
     received = models.ForeignKey(CustomUser, related_name='received_message', on_delete=models.CASCADE)
     text = models.TextField()
+    image = models.ImageField(upload_to='messasge', height_field=None, width_field=None, blank=True, max_length=100, default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     cansel = models.BooleanField(default=False)
 
+
 class Notice(models.Model):
-    user = models.ForeignKey(CustomUser, related_name='notice', on_delete=models.CASCADE)
-    kind = (
+    kind_list=[
         (0,'system notice'),
         (1,'the user followed you'),
         (2,'received the message'),
         (3,'the user replied you')
-    )
+    ]
+    user = models.ForeignKey(CustomUser, related_name='notice', on_delete=models.CASCADE)
+    kind = models.IntegerField(choices=kind_list,default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     read = models.BooleanField(default=False)
     text = models.TextField()
@@ -98,8 +101,3 @@ class Post(models.Model):
     
     image = models.ImageField(upload_to='post', height_field=None, width_field=None, blank=True, max_length=100, default=False)
 
-class Message(models.Model):
-    text = models.TextField()
-    send_to = models.ForeignKey(CustomUser, related_name='received', on_delete=models.CASCADE)
-    send_from = models.ForeignKey(CustomUser, related_name='sent', on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
