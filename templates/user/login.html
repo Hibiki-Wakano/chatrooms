@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
 <p>ログインしてください</p>
-<form method="post" action="{% url 'li' %}">
+<form method="post" action="{% url 'li' %}" class="p-4 m-4 bg-light border border-success rounded form-group">
     {% csrf_token %}
-    <td><label for="userid">ユーザーID:</label></td>
+    <td><label for="userid">ユーザーID: </label></td>
     <td><input type="text" name="username"></td>
-    <td><label for="password">パスワード：</label></td>
+    <div class="my-2"></div>
+    <td><label for="password">パスワード: </label></td>
     <td><input type="password" name="password"></td>
-    <input type="submit" class="btn" value="ログイン">
+    <div></div>
+    <input type="submit" class="btn btn-primary mt-2" value="ログイン">
  </form>
+ <a href={%url 'uc'%} class="mx-2 btn btn-secondary">アカウント作成</a>
 {% endblock content %}
-

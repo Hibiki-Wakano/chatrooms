@@ -34,9 +34,11 @@ class MessageBoxView(ListView):
                 Q(sent=self.request.user, received_id=q[0])
                 ).last()
             new_messages.append(message)
-        new_messages.reverse()
-        queryset = new_messages
-        print(queryset)
+        none_qs = models.Message.objects.none()
+        for q in new_messages:
+            none_qs = none_qs.union(models.Message.objects.filter(pk=q.pk))
+        print(none_qs)
+        queryset = none_qs.order_by('-created_at')
         return queryset
 
 
@@ -70,10 +72,8 @@ class MessageCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         receive = self.kwargs.get('p')
         received = get_object_or_404(models.CustomUser, username=receive)
-
         message = form.save(commit=False)
         message.received = received
-
         message.sent = self.request.user
         message.save()
 

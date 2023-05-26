@@ -1,5 +1,5 @@
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -65,7 +65,7 @@ WSGI_APPLICATION = 'chatroomsproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'dev-db.sqlite3',
     }
 }
 
@@ -122,3 +122,5 @@ LOGOUT_REDIRECT_URL='/login' #ログアウト時の遷移先URL
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media_local"
 
+#STATIC_URL = '/static/'
+#STATIC_ROOT = BASE_DIR / 'static'

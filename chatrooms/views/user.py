@@ -6,7 +6,7 @@ from ..forms import CustomUserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from PIL import Image
 
-class UserCreateView(LoginRequiredMixin, CreateView):
+class UserCreateView(CreateView):
     template_name = 'user/create.html'
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('rl')
