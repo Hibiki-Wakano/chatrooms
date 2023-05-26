@@ -41,9 +41,8 @@ class Message(models.Model):
 class Notice(models.Model):
     kind_list=[
         (0,'system notice'),
-        (1,'the user followed you'),
-        (2,'received the message'),
-        (3,'the user replied you')
+        (1,'important or fatal notice in system notice'),
+        (2,'notice from other users'),
     ]
     user = models.ForeignKey(CustomUser, related_name='notice', on_delete=models.CASCADE)
     kind = models.IntegerField(choices=kind_list,default=0)

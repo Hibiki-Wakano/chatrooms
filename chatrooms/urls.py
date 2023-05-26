@@ -7,6 +7,10 @@ urlpatterns = [
     path('login', auth.Login.as_view(), name='li'),
     path('logout', auth.Logout.as_view(), name='lo'),
 
+    path('notice', notice.NoticeListView.as_view(), name='nl'),
+
+
+
     path('user/list', user.UserListView.as_view(), name='ul'),
     path('user/search/<p>', user.UserSearchView.as_view(), name='us'),
     path('user/<int:pk>', user.UserDetailView.as_view(), name='ud'),

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content%}
+{% for object in object_list %}
+{% if object.kind == 0 %}
+<div class="m-2 p-2 bg-warning font-weight-bold">
+{% elif object.kind == 1 %}
+<div class="m-2 p-2 bg-danger font-weight-bold">
+{% elif object.kind == 2 %}
+<div class="m-2 p-2 bg-info">
+{% endif %}
+    <div>
+        [{{object.created_at|date:"Y-n-j"}} {{object.get_kind_display}}]
+    </div>
+    {{object.text}}
+</div>
+{% endfor %}
+{% endblock %}
