@@ -1,14 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
-from .. import models
+from . import mixins
+from .. import models, forms
 from django.db.models import Q
 from chatrooms.forms import LoginForm, CustomUserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
-from .. import forms
 
-class MessageBoxView(ListView):
+class MessageBoxView(LoginRequiredMixin, ListView):
     template_name='message/box.html'
     model = models.Message
 
@@ -36,13 +36,14 @@ class MessageBoxView(ListView):
             new_messages.append(message)
         none_qs = models.Message.objects.none()
         for q in new_messages:
-            none_qs = none_qs.union(models.Message.objects.filter(pk=q.pk))
-        print(none_qs)
+            if mixins.connected_check(self,q.sent):
+                none_qs = none_qs.union(models.Message.objects.filter(pk=q.pk))
+            #none_qs = none_qs.union(models.Message.objects.filter(pk=q.pk))
         queryset = none_qs.order_by('-created_at')
         return queryset
 
 
-class MessageRoomView(ListView):
+class MessageRoomView(LoginRequiredMixin, ListView):
     template_name='message/room.html'
     model = models.Message
     
@@ -76,7 +77,11 @@ class MessageCreate(LoginRequiredMixin, CreateView):
         message.received = received
         message.sent = self.request.user
         message.save()
-
+        models.Notice.objects.create(
+            user=models.CustomUser.objects.get(username=self.kwargs.get('p')), 
+            kind=2, 
+            text=str(self.request.user)+' has sent you message!\n'+message.text
+            )
         return redirect('mr', p=received.username)
 
 

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+<div class="row">
+    <div class="col-6 border m-2 p-2">
+        <p>表示設定</p>
+        <div>夜間モード: {{config.darkmode}}</div>
+    </div>
+    <div class="col-12"></div>
+    <div class="col-6 border m-2 p-2">
+        <p>通知設定</p>
+        <div>通知: {{config.notice_only_connected}}</div>
+        <div>メッセージ: {%if config.message_only_connected%}全員{%else%}フレンドのみ{%endif%}</div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

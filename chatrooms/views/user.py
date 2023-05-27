@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from .. import models
 from ..forms import CustomUserCreationForm
+from . import mixins
 from django.contrib.auth.mixins import LoginRequiredMixin
 from PIL import Image
 
@@ -26,7 +27,7 @@ class UserListView(ListView):
                 pass
             try:
                 models.Block.objects.get(blocked_id=self.request.user.pk, block_id=u.pk)
-                print(str(u.username)+'blocked me')
+                print(str(u.username)+' blocked me')
                 qs = qs.exclude(id=u.pk)
             except:
                 pass
@@ -47,7 +48,7 @@ class UserSearchView(ListView):
         context['users_list'] = models.CustomUser.objects.filter(username__contains=self.kwargs.get('p'))
         return context
 
-class UserDetailView(DetailView):
+class UserDetailView(LoginRequiredMixin, mixins.BlockTestMixin, DetailView):
     template_name = 'user/detail.html'
     model = models.CustomUser
     def get(self, request, **kwargs):
@@ -76,6 +77,8 @@ class UserDetailView(DetailView):
         except:
             context['imgurl'] = "/media/icon/none.png"
         return context
+
+
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'user/update.html'

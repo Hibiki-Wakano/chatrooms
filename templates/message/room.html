@@ -4,7 +4,7 @@
 {% load image_filter %}
 <div class="container w-75">
     <div class="container row mt-2 justify-content-end" name="form">
-        <form method="post" action="{% url 'mc' p %}" class="rounded form-group col-9 align-items-center">
+        <form method="post" action="{% url 'mc' p %}" enctype="multipart/form-data" class="rounded form-group col-9 align-items-center">
             <div class=""></div>
             {% csrf_token %}
             {{ messageform.text }}
@@ -17,16 +17,16 @@
         {% if message.sent == user %}
         <div class="container row justify-content-end my-2" name="message">
             <div class="container col-auto row" name="sent">
-                <div class="col-auto d-flex align-items-center pt-2" name="text">
-                    <p>{{message.text|linebreaks}}</p>
+                <div class="row col-auto d-flex align-items-center pt-2 justify-content-end" name="text">
+                    <div class="col-auto"><p>{{message.text|linebreaks}}</p></div>
                     {%if not message.image == 'False' %}
-                    <div class=""></div>
-                    <div class="">
+                    <div class="col-12"></div>
+                    <div class="col-auto">
                         <img src={{message.image|image_filter}} width="256" height="192" >
                     </div>
                     {%endif%}
                 </div>
-                <div class="col-auto" name="icon">
+                <div class="col-auto d-flex align-items-center" name="icon">
                     <a href={%url 'ud' message.sent.pk%}>
                         <img src={{message.sent.icon|icon_filter}} alt={{message.sent.icon}} class="rounded-circle col-auto" width="48" height="48">
                     </a>

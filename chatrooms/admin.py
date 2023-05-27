@@ -1,9 +1,10 @@
 from django.contrib import admin
-from .models import CustomUser, Notice, Message, Connect, Block, Room, Post
+from .models import CustomUser, Config, Notice, Message, Connect, Block, Room, Post
 from django.contrib.auth.admin import UserAdmin
 # Register your models here.
 
 admin.site.register(CustomUser)
+admin.site.register(Config)
 admin.site.register(Notice)
 admin.site.register(Message)
 admin.site.register(Connect)

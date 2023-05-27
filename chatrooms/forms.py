@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, CustomUser, Message
+from .models import Post, CustomUser, Message, Config
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 class LoginForm(AuthenticationForm):
@@ -12,7 +12,7 @@ class LoginForm(AuthenticationForm):
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ('username','user_name',)
+        fields = ('username','user_name','icon',)
 
 class CustomUserUpdateForm(forms.ModelForm): #ModelFromを継承してFormクラスを生成する
     class Meta:
@@ -41,3 +41,9 @@ class MessageCreateForm(forms.ModelForm):
         widgets = {
             'text': forms.Textarea(attrs={'rows':1, 'cols':45}),
         }
+
+class Configorm(forms.ModelForm):
+
+    class Meta:
+        model = Config
+        fields = ("darkmode", "message_only_connected")

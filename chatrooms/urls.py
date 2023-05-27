@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import auth,user,notice,connect,block,message,room
+from .views import auth,system, user,connect,block,message,room
 
 from django.contrib import admin
 
@@ -7,7 +7,8 @@ urlpatterns = [
     path('login', auth.Login.as_view(), name='li'),
     path('logout', auth.Logout.as_view(), name='lo'),
 
-    path('notice', notice.NoticeListView.as_view(), name='nl'),
+    path('config', system.ConfigView.as_view(), name='cf'),
+    path('notice', system.NoticeListView.as_view(), name='nl'),
 
 
 
@@ -38,6 +39,8 @@ urlpatterns = [
     path('room/<int:pk>/delete', room.RoomDeleteView.as_view(), name='rdl'),
 
     path('room/<int:pk>/komento', room.PostCreate.as_view(), name='pc'),#ok
+
+    path('dev', system.DevelopmentView.as_view(), name='dev'),
     path('', room.RoomListView.as_view(), name='index'),
 ]
 
