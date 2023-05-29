@@ -18,7 +18,7 @@ class CustomUser(AbstractUser):
     #superuser_status = False
     first_name = None
     last_name = None
-    email_address = None
+    email_address = models.EmailField(default='notset@example.com')
     #staff_status = False
     date_joined = None
 

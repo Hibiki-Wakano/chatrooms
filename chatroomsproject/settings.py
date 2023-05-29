@@ -122,5 +122,12 @@ LOGOUT_REDIRECT_URL='/login' #ログアウト時の遷移先URL
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media_local"
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'aqurine117@gmail.com'
+EMAIL_HOST_PASSWORD = 'cxaamxqgrwahgrud'
+EMAIL_USE_TLS = True
+
 #STATIC_URL = '/static/'
 #STATIC_ROOT = BASE_DIR / 'static'

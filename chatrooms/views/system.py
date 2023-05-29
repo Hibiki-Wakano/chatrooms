@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail, EmailMultiAlternatives
 from .. import models, forms
 from chatrooms.forms import LoginForm, CustomUserCreationForm
-from django.contrib.auth.mixins import LoginRequiredMixin
 import datetime
+
+from django.template.loader import get_template
 
 class NoticeListView(LoginRequiredMixin, ListView):
     template_name = 'system/notice.html'
@@ -48,9 +51,32 @@ class ConfigView(LoginRequiredMixin, TemplateView):
 class DevelopmentView(TemplateView):
     template_name = 'system/development.html'
     def get(self, request, **kwargs):
+        self.meeru_okuru()
+
+        return redirect('rl')
+
+    def meeru_okuru(self):
+        subject = 'メール送信テスト'
+        message = 'やっほー'
+        html_content = f"""
+        <p>やほほー</p>
+        """
+        sent = 'aqurine117@gmail.com'
+        receive = 'wakanohibiki0131@gmail.com'
+        msg = EmailMultiAlternatives(
+        subject, 
+        message, 
+        sent, 
+        [receive])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+        return 0
+
+    """
+    def get(self, request, **kwargs):
         for user in models.CustomUser.objects.all():
             print(user)
             models.Config.objects.create(
                 user = user,
             )
-        return redirect('rl')
+        return redirect('rl')"""
