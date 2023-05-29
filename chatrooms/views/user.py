@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from .. import models
-from ..forms import CustomUserCreationForm
+from ..forms import CustomUserCreationForm, CustomUserSearchForm
 from . import mixins
 from django.contrib.auth.mixins import LoginRequiredMixin
 from PIL import Image
@@ -47,6 +47,23 @@ class UserSearchView(ListView):
         context=super().get_context_data()
         context['users_list'] = models.CustomUser.objects.filter(username__contains=self.kwargs.get('p'))
         return context
+
+def usersearch(request):
+    searchForm = CustomUserSearchForm(request.GET)
+    # searchForm変数に正常なデータがあれば
+    if searchForm.is_valid():
+        username = searchForm.cleaned_data['username'] # keyword変数にフォームのキーワードを代入
+        users = models.CustomUser.objects.filter(username=username) # キーワードを含むレコードをfilterメソッドで取り出し、articles変数に代入
+    # それ以外の場合
+    else:
+        searchForm = CustomUserSearchForm() # searchForm変数をSearchFormオブジェクトで上書き
+        users = models.CustomUser.objects.all() # すべてのレコードを取得
+ 
+    context = {
+    'users_list': users,
+    'searchForm': searchForm, # テンプレートに渡すために追記
+    }
+    return render(request, 'user/list.html', context)
 
 class UserDetailView(LoginRequiredMixin, mixins.BlockTestMixin, DetailView):
     template_name = 'user/detail.html'

@@ -23,8 +23,16 @@ class CustomUser(AbstractUser):
     date_joined = None
 
 class Config(models.Model):
+    open_config = [
+        (0,'全体に公開する'),
+        (1,'フレンドのみ公開'),
+        (2,'非公開')
+    ]
+
     user = models.OneToOneField(CustomUser,on_delete=models.CASCADE)
     darkmode = models.BooleanField(default=False,blank=False)
+    room_post_log = models.IntegerField(choices=open_config, default=0)
+    friend = models.IntegerField(choices=open_config, default=0)
     notice_only_connected = models.BooleanField(default=False,blank=False)
     message_only_connected = models.BooleanField(default=False,blank=False)
 

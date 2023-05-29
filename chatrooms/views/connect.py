@@ -53,6 +53,11 @@ class ConnectCreateView(CreateView):
     def form_valid(self, form):
         form.instance.follow = self.request.user
         form.instance.follower = models.CustomUser.objects.get(id=self.kwargs.get('pk'))
+        models.Notice.objects.update_or_create(
+            user=models.CustomUser.objects.get(id=self.kwargs.get('pk')), 
+            kind=2, 
+            text=str(self.request.user)+' has follow you!'
+            )
         return super(ConnectCreateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
