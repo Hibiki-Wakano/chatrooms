@@ -37,13 +37,17 @@ class ConfigView(LoginRequiredMixin, TemplateView):
             'user': self.request.user,
             'config': models.Config.objects.get(user=self.request.user),
             #'time': self.request.user.created_at-time.time()
+            'form': forms.ConfigForm
         }
-        t1=self.request.user.created_at.time()
-        t2=datetime.datetime.now()
-        print(t1)
-        print(t2)
         return self.render_to_response(ctx)
-
+    
+    def post(self, request, **kwargs):
+        print(self.kwargs)
+        config = models.Config.objects.get(user=self.request.user)
+        config.room_post_log = request.POST['room_post_log']
+        config.friend = request.POST['friend']
+        config.save()
+        return redirect('cf')
 
 
 

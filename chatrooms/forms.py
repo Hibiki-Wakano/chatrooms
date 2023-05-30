@@ -42,8 +42,36 @@ class MessageCreateForm(forms.ModelForm):
             'text': forms.Textarea(attrs={'rows':1, 'cols':45}),
         }
 
-class Configorm(forms.ModelForm):
+class ConfigForm(forms.ModelForm):
+
+    message_only_connected = forms.MultipleChoiceField(
+        label="ダイレクトメッセージ",
+        choices=Config.open_config,
+        widget=forms.RadioSelect,
+    )
+    
+    notice_only_connected = forms.MultipleChoiceField(
+        label="通知設定",
+        choices=[
+            (0,'全員から受け取る'),
+            (1,'フレンドのみ許可する')
+        ],
+        widget=forms.RadioSelect,
+    )
+
+    room_post_log = forms.MultipleChoiceField(
+        label="投稿履歴",
+        choices=Config.open_config,
+        widget=forms.RadioSelect,
+    )
+
+    friend = forms.MultipleChoiceField(
+        label="フレンド一覧",
+        choices=Config.open_config,
+        widget=forms.RadioSelect,
+    )
 
     class Meta:
         model = Config
-        fields = ("darkmode", "message_only_connected")
+        #fields = ("darkmode", "message_only_connected")
+        fields = ('room_post_log', "friend","notice_only_connected")

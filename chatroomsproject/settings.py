@@ -1,3 +1,4 @@
+from django.core.management.utils import get_random_secret_key
 from pathlib import Path
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -8,13 +9,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-vre_yk$=ln7e#sgp^lu(7@(hfrir$nois-!51l7(d&br0*jjq#'
-
+SECRET_KEY = get_random_secret_key()  
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+#CSRF_COOKIE_SECURE = True
+#SESSION_COOKIE_SECURE = True
 
+#ALLOWED_HOSTS = ['localhost', '.pythonanywhere.com', 'HibikiWakano.pythonanywhere.com']
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -131,3 +133,11 @@ EMAIL_USE_TLS = True
 
 #STATIC_URL = '/static/'
 #STATIC_ROOT = BASE_DIR / 'static'
+
+
+
+
+try:
+    from .local_settings import *
+except:
+    pass

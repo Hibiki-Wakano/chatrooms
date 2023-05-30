@@ -20,15 +20,16 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link {%if not user.notice.count == 0 %}active{%endif%}" aria-current="page" href={%url 'nl'%}>通知{%if not user.notice.count == 0 %} ({{user.notice.count}}){%endif%}</a>
+              <a class="nav-link {%if not user.notice.count == 0 %}active{%endif%}" aria-current="page" href={%url 'nl'%}>通知{%if user.notice.count %} ({{user.notice.count}}){%endif%}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href={%url 'fl1' user.pk%}>フレンド</a>
+              {%if user.pk %}<a class="nav-link active" href={%url 'fl1' user.pk%}>フレンド</a>{%endif%}
             </li>
             <li class="nav-item">
               <a class="nav-link active" href={%url 'ul'%}>ユーザーを探す</a>
             </li>
           </ul>
+          {%if user.pk %}
           <li class="nav-item dropdown d-flex">
             <a class="nav-link dropdown-toggle text-decoration-none text-white navbar-brand" href={%url 'mp'%} id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               {{user}}
@@ -39,6 +40,9 @@
               <li><a class="dropdown-item" href={%url 'lo'%}>ログアウト</a></li>
             </ul>
           </li>
+          {%else%}
+          <li><a class="navbar-brand" href={%url 'li'%}>ログイン</a></li>
+          {%endif%}
           <form class="d-flex">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-light" type="submit">Search</button>

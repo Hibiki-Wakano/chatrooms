@@ -1,94 +1,51 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load config_default_set %}
 <div class="container">
 <div class="row">
-    <div class="col-6 border m-2 p-2">
-        <p>ユーザー情報</p>
-        <div>ID: {{user.username}}</div>
-        <div>アカウント作成日: {{user.created_at|date:"Y/n/j"}}</div>
-        <div>ルームコメント投稿総数: {{user.post.count}}</div>
-    </div>
-    <div class="col-12"></div>
-    <div class="col-6 border m-2 p-2">
-        <div class="py-2 m-2" name="notice-config">通知 <! –: {%if config.notice_only_connected%}全員{%else%}フレンドのみ{%endif%}->
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="notice" id="notice-False" value="option1" checked>
-                <label class="form-check-label" for="notice-False">
-                  全員から受け取る
-                </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="notice" id="notice-True" value="option2">
-                <label class="form-check-label" for="notice-True">
-                  フレンドのみ許可する
-                </label>
-              </div>
+
+  <div class="col-6 border m-2 p-2">
+    <p>ユーザー情報</p>
+    <div>ID: {{user.username}}</div>
+    <div>アカウント作成日: {{user.created_at|date:"Y/n/j"}}</div>
+    <div>ルームコメント投稿総数: {{user.post.count}}</div>
+  </div>
+
+  <div class="col-12"></div>
+    <form method="post" action="{% url 'cf' %}">
+      {% csrf_token %}
+      <div class="col-6 border m-2 p-2">
+        <div class="py-2 m-2" name="notice-config">{{form.notice_only_connected.label_tag}} {%if not user.config.notice_only_connected%}全員から受け取る{%else%}フレンドのみ許可する{%endif%}
+          {%for f in form.notice_only_connected%}
+          {%if f.data.value == user.config.notice_only_connected %}
+          <div class="">{{f|config_default_set}}</div>
+          {%else%}<div class="">{{f}} </div>
+          {%endif%}
+          {%endfor%}
         </div>
-        <div class="py-2 m-2" name="message-config">ダイレクトメッセージの設定
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="message" id="message-False" value="option1" checked>
-                <label class="form-check-label" for="message-False">
-                全員から受け取る
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="message" id="message-True" value="option2">
-                <label class="form-check-label" for="message-True">
-                フレンドのみ許可する
-                </label>
-            </div>
+
+      </div>
+      <div class="col-6 border m-2 p-2">
+        <div class="py-2 m-2" name="postlog-config">{{form.room_post_log.label_tag}} {{user.config.get_room_post_log_display}}
+          {%for f in form.room_post_log%}
+          {%if f.data.value == user.config.room_post_log %}
+          <div class="">{{f|config_default_set}}</div>
+          {%else%}<div class="">{{f}} </div>
+          {%endif%}
+          {%endfor%}
         </div>
-    </div>
-    <div class="col-6 border m-2 p-2">
-        <div class="py-2 m-2" name="postlog-config">投稿履歴 <! –: {%if config.notice_only_connected%}全員{%else%}フレンドのみ{%endif%}->
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="postlog" id="postlog-0" value="option1" checked>
-                <label class="form-check-label" for="postlog-0">
-                  全体に公開
-                </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="postlog" id="postlog-1" value="option2">
-                <label class="form-check-label" for="postlog-1">
-                  フレンドのみ公開
-                </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="postlog" id="postlog-2" value="option2">
-                <label class="form-check-label" for="postlog-2">
-                  非公開
-                </label>
-              </div>
+        <div class="py-2 m-2" name="connect-config">{{form.friend.label_tag}} {{user.config.get_friend_display}}
+          {%for f in form.friend%}
+          {%if f.data.value == user.config.friend %}
+          <div class="">{{f|config_default_set}}</div>
+          {%else%}<div class="">{{f}} </div>
+          {%endif%}
+          {%endfor%}
         </div>
-        <div class="py-2 m-2" name="connect-config">フォロー数 / フォロワー数
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="connect" id="connect-False" value="option1" checked>
-                <label class="form-check-label" for="connect-False">
-                全体に公開
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="connect" id="connect-True" value="option2">
-                <label class="form-check-label" for="connect-True">
-                フレンドのみ公開する
-                </label>
-            </div>
-        </div>
-    </div>
-    <button type="button" class="btn btn-success">更新する</button>
+      </div>
+      <button type="submit" class="btn btn-success my-2">更新する</button>
+    </form>
+  </div>
+</div>
 </div>
 {% endblock %}
-
-
-<div class="row m-2">
-    <div class="col-auto border ">
-        <div class="text-center">ID: </div>
-        <div class="text-center">アカウント作成日: </div>
-        <div class="text-center">コメント投稿数: </div>
-    </div>
-    <div class="col-auto border">
-        <div>{{user.username}}</div>
-        <div>{{user.created_at|date:"Y/n/j"}}</div>
-        <div>{{user.post.count}}</div>
-    </div>
-</div>
