@@ -44,18 +44,15 @@ class MessageCreateForm(forms.ModelForm):
 
 class ConfigForm(forms.ModelForm):
 
-    message_only_connected = forms.MultipleChoiceField(
+    message = forms.MultipleChoiceField(
         label="ダイレクトメッセージ",
-        choices=Config.open_config,
+        choices=Config.receive_config,
         widget=forms.RadioSelect,
     )
     
-    notice_only_connected = forms.MultipleChoiceField(
+    notice = forms.MultipleChoiceField(
         label="通知設定",
-        choices=[
-            (0,'全員から受け取る'),
-            (1,'フレンドのみ許可する')
-        ],
+        choices=Config.receive_config,
         widget=forms.RadioSelect,
     )
 
@@ -74,4 +71,4 @@ class ConfigForm(forms.ModelForm):
     class Meta:
         model = Config
         #fields = ("darkmode", "message_only_connected")
-        fields = ('room_post_log', "friend","notice_only_connected")
+        fields = ('room_post_log', "friend","notice","message")

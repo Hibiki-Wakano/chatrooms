@@ -28,13 +28,18 @@ class Config(models.Model):
         (1,'フレンドのみ公開'),
         (2,'非公開')
     ]
+    receive_config = [
+        (0,'全員に許可する'),
+        (1,'フレンドのみ許可'),
+        (2,'全員から受け取らない')
+    ]
 
     user = models.OneToOneField(CustomUser,on_delete=models.CASCADE)
     darkmode = models.BooleanField(default=False,blank=False)
     room_post_log = models.IntegerField(choices=open_config, default=0)
     friend = models.IntegerField(choices=open_config, default=0)
-    notice_only_connected = models.BooleanField(default=False,blank=False)
-    message_only_connected = models.BooleanField(default=False,blank=False)
+    notice = models.IntegerField(choices=receive_config, default=0)
+    message = models.IntegerField(choices=receive_config, default=0)
 
 class Message(models.Model):
     sent = models.ForeignKey(CustomUser, related_name='sent_message', on_delete=models.CASCADE)

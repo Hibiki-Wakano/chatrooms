@@ -42,8 +42,12 @@ class ConfigView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(ctx)
     
     def post(self, request, **kwargs):
-        print(self.kwargs)
         config = models.Config.objects.get(user=self.request.user)
+
+        print(request.POST['message'])
+        print(request.POST['notice'])
+        config.message = request.POST['message']
+        config.notice = request.POST['notice']
         config.room_post_log = request.POST['room_post_log']
         config.friend = request.POST['friend']
         config.save()
@@ -84,3 +88,12 @@ class DevelopmentView(TemplateView):
                 user = user,
             )
         return redirect('rl')"""
+
+class NavSearch(TemplateView):
+    template_name = 'user/list.html'
+    def get(self,request,**kwargs):
+        inputed = request.GET['userid']
+        context={}
+        context['users_list']=models.CustomUser.objects.filter(username__contains=inputed)
+        #return redirect('rl')
+        return self.render_to_response(context)

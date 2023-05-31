@@ -34,11 +34,10 @@ class MessageBoxView(LoginRequiredMixin, ListView):
                 Q(sent=self.request.user, received_id=q[0])
                 ).last()
             new_messages.append(message)
+            print(new_messages)
         none_qs = models.Message.objects.none()
         for q in new_messages:
-            if mixins.connected_check(self,q.sent):
-                none_qs = none_qs.union(models.Message.objects.filter(pk=q.pk))
-            #none_qs = none_qs.union(models.Message.objects.filter(pk=q.pk))
+            none_qs = none_qs.union(models.Message.objects.filter(pk=q.pk))
         queryset = none_qs.order_by('-created_at')
         return queryset
 

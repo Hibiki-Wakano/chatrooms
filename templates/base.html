@@ -43,12 +43,12 @@
           {%else%}
           <li><a class="navbar-brand" href={%url 'li'%}>ログイン</a></li>
           {%endif%}
-          <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-light" type="submit">Search</button>
-          </form>
         </div>
       </div>
+      <form class="d-flex" action="/dev/search">
+        <input class="form-control me-2" name="userid" required id="id_userid" type="arch" placeholder="ユーザーIDで検索" value="" aria-label="Search">
+        <button class="btn btn-outline-light" type="submit">Search</button>
+      </form>
     </nav>
       {% block content %}{% endblock content %}
       {% block script%}{% endblock script%}

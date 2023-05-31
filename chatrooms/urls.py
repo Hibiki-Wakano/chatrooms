@@ -41,6 +41,7 @@ urlpatterns = [
     path('room/<int:pk>/komento', room.PostCreate.as_view(), name='pc'),#ok
 
     path('dev', system.DevelopmentView.as_view(), name='dev'),
+    path('dev/search', system.NavSearch.as_view(), name='ds'),
     path('', room.RoomListView.as_view(), name='index'),
 ]
 
